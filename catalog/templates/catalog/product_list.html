@@ -1,0 +1,52 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Проект разработки интернет магазина{% endblock %}
+{% block content %}
+{% load my_tags %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Удобный сервис взаимодействия</h4>
+                </div>
+                  <div class="card-body">
+                    <h4 class="card-title pricing-card-title">Комиссия агента всего 0,2%</h4>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>- Неограниченная лицензия</li>
+                        <li>- Поддержка</li>
+                        <li>- Установка на сервер</li>
+                        <li>- Получение обновлений</li>
+                    </ul>
+                     <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:prod_create' %}" role="button">Создание продукта</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2 class="fst-italic" style="margin-top:5px;margin-bottom:25px;text-decoration: underline" align="center" >Перечень товаров</h2>
+<div class="container">
+    <div class="row text-center">
+        {% for prod in object_list %}
+        <div class="col-12">
+            <div class="card mb-4 ">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{object.name}}</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-2 text-start m-3">
+                            <li>- {{prod.name}}, описание - {{prod.description|truncatechars:100}},фото:
+                            <img src="{{prod.image|media_filter}}" alt="Извините, товар '{{prod.name|lower}}' без фото;" class="img-thumbnail"></li>
+                            <a class="btn btn-primary mt-3" href="{% url 'catalog:prod_detail' prod.pk %}" role="button">Просмотреть</a>
+                            {% if user == prod.owner %}
+                                <a class="btn btn-primary mt-3" href="{% url 'catalog:prod_update' prod.pk %}" role="button">Редактировать</a>
+                                <a class="btn btn-primary mt-3" href="{% url 'catalog:prod_delete' prod.pk %}" role="button">Удалить</a>
+                            {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
